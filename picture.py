@@ -1,45 +1,57 @@
 """
-Create and display simple pictures. Supported color names can be found
-at the bottom of
-https://pillow.readthedocs.io/en/stable/_modules/PIL/ImageColor.html
+Module for drawing, displaying, and saving simple pictures.
 
 Example usage:
+```
 import picture
 
-picture.new_picture(400, 300)  # Create a blank, 800x600 picture
-picture.draw_text(200, 20, "A fun little picture!", 16)
-picture.set_fill_color("burlywood")
-picture.set_outline_color("dark red")
+picture.new_picture(400, 300)  #Create a blank, 400x300 picture
 picture.set_pen_width(8)
 
-picture.fill_rectangle(10, 30, 100, 200)
-picture.set_outline_color("green")
-picture.draw_square(20, 40, 100)
-picture.display()
-picture.delay(2000)  # Wait for 2000 ms = 2 seconds
+# Draw O
+picture.set_outline_color("black")
+picture.set_fill_color("#A6192E")
+picture.draw_filled_rectangle(40,20,150,200)
 
-picture.set_position(100, 150)
-picture.set_outline_color("purple")
-picture.set_direction(0)
-picture.draw_forward(100)
-picture.rotate(30)
-picture.draw_forward(75)
-picture.rotate(30)
-picture.draw_forward(50)
-picture.rotate(30)
-picture.draw_forward(25)
-picture.rotate(30)
-picture.draw_forward(12)
+picture.set_fill_color("white")
+picture.draw_filled_oval(115,120,40,60)
 
-picture.set_pen_width(2)
+# Draw C
+picture.set_fill_color("#FFC72C")
+picture.draw_filled_chord(315,120,100,70,290)
+
+picture.set_outline_color("white")
+picture.set_fill_color("white")
+picture.draw_filled_circle(315,120,60)
+
+picture.set_outline_color("black")
+picture.draw_arc(315,120,60,55,305)
+
+# Draw line
 picture.set_outline_color("aquamarine")
-picture.draw_polygon([(200, 100), (250, 100), (225, 150)])
+picture.set_position(40,260)
+picture.set_direction(-45)
+for i in range(9):
+  picture.display()
+  picture.delay(500)
+  picture.draw_forward(50)
+  picture.set_direction(picture.get_direction() * -1)
 
-picture.save_picture("example.png") # Save it to a file
-picture.display()
+# Text
+picture.set_outline_color((0,0,0))
+picture.draw_text(120,275,"Made with Code", 24)
+
+# Save and display
+picture.save_picture("example.png") 
+picture.run()
+```
+
+The following is a list of supported color names:
+
+`antiquewhite`, `aqua`, `aquamarine`, `azure`, `beige`, `bisque`, `black`, `blanchedalmond`, `blue`, `blueviolet`, `brown`, `burlywood`, `cadetblue`, `chartreuse`, `chocolate`, `coral`, `cornflowerblue`, `cornsilk`, `crimson`, `cyan`, `darkblue`, `darkcyan`, `darkgoldenrod`, `darkgray`, `darkgrey`, `darkgreen`, `darkkhaki`, `darkmagenta`, `darkolivegreen`, `darkorange`, `darkorchid`, `darkred`, `darksalmon`, `darkseagreen`, `darkslateblue`, `darkslategray`, `darkslategrey`, `darkturquoise`, `darkviolet`, `deeppink`, `deepskyblue`, `dimgray`, `dimgrey`, `dodgerblue`, `firebrick`, `floralwhite`, `forestgreen`, `fuchsia`, `gainsboro`, `ghostwhite`, `gold`, `goldenrod`, `gray`, `grey`, `green`, `greenyellow`, `honeydew`, `hotpink`, `indianred`, `indigo`, `ivory`, `khaki`, `lavender`, `lavenderblush`, `lawngreen`, `lemonchiffon`, `lightblue`, `lightcoral`, `lightcyan`, `lightgoldenrodyellow`, `lightgreen`, `lightgray`, `lightgrey`, `lightpink`, `lightsalmon`, `lightseagreen`, `lightskyblue`, `lightslategray`, `lightslategrey`, `lightsteelblue`, `lightyellow`, `lime`, `limegreen`, `linen`, `magenta`, `maroon`, `mediumaquamarine`, `mediumblue`, `mediumorchid`, `mediumpurple`, `mediumseagreen`, `mediumslateblue`, `mediumspringgreen`, `mediumturquoise`, `mediumvioletred`, `midnightblue`, `mintcream`, `mistyrose`, `moccasin`, `navajowhite`, `navy`, `oldlace`, `olive`, `olivedrab`, `orange`, `orangered`, `orchid`, `palegoldenrod`, `palegreen`, `paleturquoise`, `palevioletred`, `papayawhip`, `peachpuff`, `peru`, `pink`, `plum`, `powderblue`, `purple`, `rebeccapurple`, `red`, `rosybrown`, `royalblue`, `saddlebrown`, `salmon`, `sandybrown`, `seagreen`, `seashell`, `sienna`, `silver`, `skyblue`, `slateblue`, `slategray`, `slategrey`, `snow`, `springgreen`, `steelblue`, `tan`, `teal`, `thistle`, `tomato`, `turquoise`, `violet`, `wheat`, `white`, `whitesmoke`, `yellow`, `yellowgreen`
+
 """
 
-# pylint: disable=invalid-name,global-statement,too-few-public-methods
 import math
 import tkinter
 
@@ -61,12 +73,12 @@ __all__ = [
     "draw_rectangle",
     "draw_square",
     "draw_text",
-    "fill_chord",
-    "fill_circle",
-    "fill_oval",
-    "fill_polygon",
-    "fill_rectangle",
-    "fill_square",
+    "draw_filled_chord",
+    "draw_filled_circle",
+    "draw_filled_oval",
+    "draw_filled_polygon",
+    "draw_filled_rectangle",
+    "draw_filled_square",
     "get_blue",
     "get_direction",
     "get_fill_color",
@@ -101,13 +113,15 @@ __all__ = [
 
 def parse_color(*color):
     """
-    Parses the various ways colors may be specified and returns a
-    (red, green, blue) tuple.
+    Parses the various ways colors may be specified and returns a (red, green, blue) tuple.
+
     Examples:
-        picture.parse_color("aquamarine")    # returns (127, 255, 212)
-        picture.parse_color((245, 245, 220)) # "beige"; returns (245, 245, 220)
-        picture.parse_color(95, 158, 160)    # "CadetBlue"; returns (95, 158, 160)
-        picture.parse_color("#FF802A")       # returns (255, 128, 42)
+    ```
+    picture.parse_color("aquamarine")    # returns (127, 255, 212)
+    picture.parse_color((245, 245, 220)) # "beige"; returns (245, 245, 220)
+    picture.parse_color(95, 158, 160)    # "CadetBlue"; returns (95, 158, 160)
+    picture.parse_color("#FF802A")       # returns (255, 128, 42)
+    ```
     """
     if len(color) == 1 and isinstance(color[0], str):
         return ImageColor.getrgb(color[0])
@@ -144,10 +158,13 @@ PEN_ROTATION = 0
 
 def new_picture(width, height):
     """
-    Create a new picture with the given width and height, clearing the existing
-    one.
-    Examples:
-        picture.new_picture(800, 600) # Creates an 800 x 600 blank picture
+    Create a new picture with the given width and height. This function will clear
+    any existing pictures.
+
+    Example:
+    ```
+    picture.new_picture(800, 600) #Creates a blank 800x600 picture
+    ```
     """
     global ROOT, FRAME, CANVAS, IMAGE, DRAW
 
@@ -171,18 +188,21 @@ def new_picture(width, height):
 def save_picture(path):
     """
     Save the current picture to a file.
-    WARNING: This _will_ overwrite existing files so be CAREFUL!
+    WARNING: This *will* overwrite existing files so be CAREFUL!
+
     Example:
-        picture.new_picture(100, 100)
-        picture.draw_rectangle(10, 10, 50, 50)
-        picture.save_picture("rectangle.png")
+    ```
+    picture.new_picture(100, 100)
+    picture.draw_rectangle(10, 10, 50, 50)
+    picture.save_picture("rectangle.png")
+    ```
     """
     IMAGE.save(path)
 
 
 def change_picture_size(width, height):
     """
-    Change the size of the picture to be width and height.
+    Change the size of the current picture to be width and height.
     """
     CANVAS.config(width=width, height=height)
 
@@ -190,9 +210,12 @@ def change_picture_size(width, height):
 def set_position(*position):
     """
     Set the current drawing position.
+
     Examples:
-        picture.set_position(10, 20)
-        picture.set_position((10, 20))
+    ```
+    picture.set_position(10, 20)
+    picture.set_position((10, 20))
+    ```
     """
     global PEN_POSITION
     if len(position) == 1 \
@@ -210,11 +233,16 @@ def set_position(*position):
 def get_position():
     """
     Returns the current drawing position.
+
     Example:
-        pos = picture.get_position()
-        picture.set_position(10, 20)
-        # Perform some drawing at (10, 20)
-        picture.set_position(pos)
+    ```
+    pos = picture.get_position()     #Store current position
+
+    for theta in range(0, 360, 60):
+        picture.set_direction(theta)
+        picture.draw_forward(25)
+        picture.set_position(pos)    #Reset position
+    ```
     """
     return PEN_POSITION
 
@@ -222,8 +250,11 @@ def get_position():
 def set_pen_x(x):
     """
     Set the x-coordinate of the pen's position.
+
     Example:
-        picture.set_pen_x(10)
+    ```
+    picture.set_pen_x(10)
+    ```
     """
     global PEN_POSITION
     PEN_POSITION = (x, PEN_POSITION[1])
@@ -232,8 +263,11 @@ def set_pen_x(x):
 def set_pen_y(y):
     """
     Set the y-coordinate of the pen's position.
+
     Example:
-        picture.set_pen_y(20)
+    ```
+    picture.set_pen_y(20)
+    ```
     """
     global PEN_POSITION
     PEN_POSITION = (PEN_POSITION[0], y)
@@ -241,10 +275,12 @@ def set_pen_y(y):
 
 def set_pen_width(width):
     """
-    Set the width of the pen.
+    Set the width of the pen in pixels.
+
     Example:
-        picture.set_pen_width(10)
-        picture.draw_forward(10)
+    ```
+    picture.set_pen_width(10)
+    ```
     """
     global PEN_WIDTH
     PEN_WIDTH = width
@@ -253,20 +289,26 @@ def set_pen_width(width):
 def get_pen_width():
     """
     Returns the current pen width.
+
     Example:
-        width = picture.get_pen_width()
+    ```
+    width = picture.get_pen_width()
+    ```
     """
     return PEN_WIDTH
 
 
 def rotate(theta):
     """
-    Rotate the current drawing direction by theta degrees.
+    Rotate the current drawing direction by `theta` degrees.
+
     Example:
-        picture.rotate(45)
-        picture.draw_forward(10)
-        picture.rotate(-45)
-        picture.draw_forward(10)
+    ```
+    picture.rotate(45)
+    picture.draw_forward(10)
+    picture.rotate(-45)
+    picture.draw_forward(10)
+    ```
     """
     global PEN_ROTATION
     PEN_ROTATION += theta
@@ -275,10 +317,15 @@ def rotate(theta):
 
 def set_direction(theta):
     """
-    Set the current drawing direction to theta degrees.
+    Set the current drawing direction to `theta` degrees.
+    An angle of 0 degrees points East, and the degrees increase
+    in a clockwise direction.
+
     Example:
-        picture.set_direction(45)
-        picture.draw_forward(20)
+    ```
+    picture.set_direction(45) #Set direction to point Southeast
+    picture.draw_forward(20)
+    ```
     """
     global PEN_ROTATION
     PEN_ROTATION = theta
@@ -287,12 +334,15 @@ def set_direction(theta):
 
 def get_direction():
     """
-    Return the current drawing direction.
+    Returns the current drawing direction in degrees.
+
     Example:
-        theta = picture.get_direction()
-        picture.set_direction(180)
-        picture.draw_forward(10)
-        picture.set_direction(theta)
+    ```
+    theta = picture.get_direction()
+    picture.set_direction(180)
+    picture.draw_forward(10)
+    picture.set_direction(theta)
+    ```
     """
     return PEN_ROTATION
 
@@ -301,34 +351,48 @@ def draw_forward(distance):
     """
     Draw a line starting from the current pen position in the current direction
     the given distance.
+
     Example:
-        picture.set_direction(0)
-        picture.set_position(100, 100)
-        picture.draw_forward(10)
-        picture.rotate(90)
-        picture.draw_forward(10)
-        picture.rotate(90)
-        picture.draw_forward(10)
+    ```
+    picture.set_direction(0)
+    picture.set_position(100, 100)
+    picture.draw_forward(10)
+    picture.rotate(90)
+    picture.draw_forward(10)
+    picture.rotate(90)
+    picture.draw_forward(10)
+    ```
     """
     global PEN_POSITION
     radian = math.radians(PEN_ROTATION)
     start_x = PEN_POSITION[0]
     start_y = PEN_POSITION[1]
-    end_x = start_x + math.cos(radian) * distance
-    end_y = start_y + math.sin(radian) * distance
+    if (PEN_ROTATION == 90) or (PEN_ROTATION == 270):
+      end_x = start_x
+      end_y = start_y + math.sin(radian) * distance
+    elif (PEN_ROTATION == 0) or (PEN_ROTATION == 180):
+      end_x = start_x + math.cos(radian) * distance
+      end_y = start_y
+    else:
+      end_x = start_x + math.cos(radian) * distance
+      end_y = start_y + math.sin(radian) * distance
     PEN_POSITION = (end_x, end_y)
     draw_line(start_x, start_y, end_x, end_y)
 
 
 def set_fill_color(*color):
     """
-    Set the fill color. The arguments are one of a string naming the color,
-    a (red, green, blue) tuple, or three arguments specifying red, green, and
-    blue.
+    Set the fill color. The function accepts either
+    - a string naming the color (list of supported color names at top of page),
+    - a (red, green, blue) tuple, or
+    - three arguments specifying red, green, and blue.
+
     Examples:
-        picture.set_fill_color("aquamarine")
-        picture.set_fill_color((245, 245, 220)) # "beige"
-        picture.set_fill_color(95, 158, 160) # "CadetBlue"
+    ```
+    picture.set_fill_color("aquamarine")
+    picture.set_fill_color((245, 245, 220)) #"beige"
+    picture.set_fill_color(95, 158, 160)    #"CadetBlue"
+    ```
     """
     global FILL_COLOR
     FILL_COLOR = parse_color(*color)
@@ -336,25 +400,29 @@ def set_fill_color(*color):
 
 def get_fill_color():
     """
-    Returns the current fill color.
+    Returns the current fill color as a (red, green, blue) tuple.
+
     Example:
-        current_color = picture.get_fill_color()
-        picture.set_fill_color("red")
-        # Do some drawing in red.
-        picture.set_fill_color(current_color)
+    ```
+    current_color = picture.get_fill_color()
+    ```
     """
     return FILL_COLOR
 
 
 def set_outline_color(*color):
     """
-    Set the outline color. The arguments are one of a string naming the color,
-    a (red, green, blue) tuple, or three arguments specifying red, green, and
-    blue.
+    Set the outline color. The function accepts either
+    - a string naming the color (list of supported color names at top of page),
+    - a (red, green, blue) tuple, or
+    - three arguments specifying red, green, and blue.
+
     Examples:
-        picture.set_outline_color("aquamarine")
-        picture.set_outline_color((245, 245, 220)) # "beige"
-        picture.set_outline_color(95, 158, 160) # "CadetBlue"
+    ```
+    picture.set_outline_color("aquamarine")
+    picture.set_outline_color((245, 245, 220)) #"beige"
+    picture.set_outline_color(95, 158, 160)    #"CadetBlue"
+    ```
     """
     global OUTLINE_COLOR
     OUTLINE_COLOR = parse_color(*color)
@@ -362,12 +430,12 @@ def set_outline_color(*color):
 
 def get_outline_color():
     """
-    Returns the current outline color as a (red, green, blue) triple.
+    Returns the current outline color as a (red, green, blue) tuple.
+
     Example:
-        current_color = picture.get_outline_color()
-        picture.set_outline_color("red")
-        # Do some drawing in red outline.
-        picture.set_outline_color(current_color)
+    ```
+    current_color = picture.get_outline_color()
+    ```
     """
     return OUTLINE_COLOR
 
@@ -375,8 +443,11 @@ def get_outline_color():
 def display():
     """
     Draw the current picture.
+
     Example:
-        picture.display()
+    ```
+    picture.display()
+    ```
     """
     global TK_IMAGE
     TK_IMAGE = ImageTk.PhotoImage(IMAGE)
@@ -387,31 +458,39 @@ def display():
 
 def delay(milliseconds):
     """
-    Pause for the given number of milliseconds
+    Pause for the given number of milliseconds.
+
     Example:
-        picture.delay(500) # Half a second
+    ```
+    picture.delay(1000) #1000 milliseconds or 1 second
+    ```
     """
     CANVAS.after(milliseconds)
 
 
 def draw_oval(x, y, hrad, vrad):
     """
-    Draw an oval centered at (x, y) with horizantal radius hrad and vertical
-    radius vrad
-    in the current outline color.
+    Draw an oval centered at (x, y) with horizontal radius `hrad` and vertical
+    radius `vrad` with the current outline color.
+
     Example:
-        picture.draw_oval(100, 200, 10, 20)
+    ```
+    picture.draw_oval(100, 200, 10, 20)
+    ```
     """
     DRAW.ellipse([(x - hrad, y - vrad), (x + hrad, y + vrad)],
                  outline=OUTLINE_COLOR, width=PEN_WIDTH)
 
 
-def fill_oval(x, y, hrad, vrad):
+def draw_filled_oval(x, y, hrad, vrad):
     """
-    Fill an oval centered at (x, y) with horizantal radius hrad and vertical
-    radius vrad with the current fill color.
+    Draw a filled oval centered at (x, y) with horizontal radius `hrad` and vertical
+    radius `vrad` with the current fill and outline colors.
+
     Example:
-        picture.fill_oval(100, 200, 10, 20)
+    ```
+    picture.draw_filled_oval(100, 200, 10, 20)
+    ```
     """
     DRAW.ellipse([(x - hrad, y - vrad), (x + hrad, y + vrad)],
                  fill=FILL_COLOR,
@@ -420,60 +499,76 @@ def fill_oval(x, y, hrad, vrad):
 
 def draw_circle(x, y, r):
     """
-    Draw a circle centered at (x, y) with radius r in the current outline
+    Draw a circle centered at (x, y) with radius `r` with the current outline
     color.
+
     Example:
-        picture.draw_circle(100, 200, 10)
+    ```
+    picture.draw_circle(100, 200, 10)
+    ```
     """
     draw_oval(x, y, r, r)
 
 
-def fill_circle(x, y, r):
+def draw_filled_circle(x, y, r):
     """
-    Fill a circle centered at (x, y) radius r with the current fill color.
+    Draw a filled circle centered at (x, y) radius `r` with the current fill 
+    and outline colors.
+
     Example:
-        picture.fill_circle(100, 200, 10)
+    ```
+    picture.draw_filled_circle(100, 200, 10)
+    ```
     """
-    fill_oval(x, y, r, r)
+    draw_filled_oval(x, y, r, r)
 
 
-def draw_arc(x, y, radius, start, end):
+def draw_arc(x, y, r, start, end):
     """
-    Draw an arc (a portion of a circle). The circle is centered at (x, y) and
-    has the given radius. The portion drawn starts at the start angle
-    and ends at the end angle.
+    Draw an arc (a portion of a circle) with the current outline color. 
+    The circle is centered at (x, y) and has radius `r`. The portion drawn 
+    starts at the `start` angle and ends at the `end` angle.
+
     Example:
-        picture.draw_arc(100, 100, 25, 45, 90) # 45 degrees to 90 degrees
+    ```
+    picture.draw_arc(100, 100, 25, 45, 90) #45 degrees to 90 degrees
+    ```
     """
-    DRAW.arc([(x - radius, y - radius), (x + radius, y + radius)],
+    DRAW.arc([(x - r, y - r), (x + r, y + r)],
              start,
              end,
              fill=OUTLINE_COLOR,
              width=PEN_WIDTH)
 
-def draw_chord(x, y, radius, start, end):
+def draw_chord(x, y, r, start, end):
     """
     Draw an arc (a portion of a circle) and connect the two end points with a
-    line. The circle is centered at (x, y) and has the given radius. The
-    portion drawn starts at the start angle and ends at the end angle.
+    line using the current outline color. The circle is centered at (x, y) and
+    has radius `r`. The portion drawn starts at the `start` angle and ends at 
+    the `end` angle.
+
     Example:
-        picture.draw_chord(100, 100, 25, 45, 90) # 45 degrees to 90 degrees
+    ```
+    picture.draw_chord(100, 100, 25, 45, 90) #45 degrees to 90 degrees
+    ```
     """
-    DRAW.chord([(x - radius, y - radius), (x + radius, y + radius)],
+    DRAW.chord([(x - r, y - r), (x + r, y + r)],
                start,
                end,
                outline=OUTLINE_COLOR,
                width=PEN_WIDTH)
 
-def fill_chord(x, y, radius, start, end):
+def draw_filled_chord(x, y, r, start, end):
     """
-    Fill an arc (a portion of a circle) with connected end points in the fill
-    color. The circle is centered at (x, y) and has the given radius. The
-    portion drawn starts at the start angle and ends at the end angle.
+    Draw a filled arc (a portion of a circle) with connected end points using 
+    the current fill and outline colors. The circle is centered at (x, y) and has radius `r`. The portion drawn starts at the `start` angle and ends at the `end` angle.
+
     Example:
-        picture.fill_chord(100, 100, 25, 45, 90) # 45 degrees to 90 degrees
+    ```
+    picture.draw_filled_chord(100, 100, 25, 45, 90) #45 degrees to 90 degrees
+    ```
     """
-    DRAW.chord([(x - radius, y - radius), (x + radius, y + radius)],
+    DRAW.chord([(x - r, y - r), (x + r, y + r)],
                start,
                end,
                outline=OUTLINE_COLOR,
@@ -482,22 +577,28 @@ def fill_chord(x, y, radius, start, end):
 
 def draw_rectangle(x, y, w, h):
     """
-    Draw a rectangle with corners (x, y), (x+w, y), (x, y+h), and (x+w, y+h) in
+    Draw a rectangle with corners (x, y), (x+w, y), (x, y+h), and (x+w, y+h) with
     the current outline color.
+
     Example:
-        picture.draw_rectangle(10, 20, 100, 50)
+    ```
+    picture.draw_rectangle(10, 20, 100, 50)
+    ```
     """
     DRAW.rectangle([(x, y), (x + w, y + h)],
                    outline=OUTLINE_COLOR,
                    width=PEN_WIDTH)
 
 
-def fill_rectangle(x, y, w, h):
+def draw_filled_rectangle(x, y, w, h):
     """
-    Fill a rectangle with corners (x, y), (x+w, y), (x, y+h), and (x+w, y+h)
-    with the current fill color.
+    Draw a filled rectangle with corners (x, y), (x+w, y), (x, y+h), and (x+w, y+h)
+    with the current fill and outline colors.
+
     Example:
-        picture.fill_rectangle(10, 20, 100, 50)
+    ```
+    picture.draw_filled_rectangle(10, 20, 100, 50)
+    ```
     """
     DRAW.rectangle([(x, y), (x + w, y + h)],
                    fill=FILL_COLOR,
@@ -508,39 +609,52 @@ def fill_rectangle(x, y, w, h):
 def draw_square(x, y, side):
     """
     Draw a square with corners (x, y), (x+side, y), (x, y+side), and
-    (x+side, y+side) in the current outline color.
+    (x+side, y+side) with the current outline color.
+
     Example:
-        picture.draw_square(10, 20, 100, 50)
+    ```
+    picture.draw_square(10, 20, 100, 50)
+    ```
     """
     draw_rectangle(x, y, side, side)
 
 
-def fill_square(x, y, side):
+def draw_filled_square(x, y, side):
     """
-    Fill a square with corners (x, y), (x+side, y), (x, y+side), and
-    (x+side, y+side) with the current fill color.
+    Draw a filled square with corners (x, y), (x+side, y), (x, y+side), and
+    (x+side, y+side) with the current fill and outline colors.
+
     Example:
-        picture.fill_square(10, 20, 100)
+    ```
+    picture.draw_filled_square(10, 20, 100)
+    ```
     """
-    fill_rectangle(x, y, side, side)
+    draw_filled_rectangle(x, y, side, side)
 
 
 def draw_polygon(vertices):
     """
-    Draw a polygon defined by a list of vertices in the current outline color.
+    Draw a polygon defined by a list of vertices using the current outline color.
+
     Example:
-        picture.draw_polygon([(10, 10), (20, 10), (15, 20)])
+    ```
+    picture.draw_polygon([(10, 10), (20, 10), (15, 20)])
+    ```
     """
     DRAW.line(vertices + [vertices[0]],
               fill=OUTLINE_COLOR,
               width=PEN_WIDTH)
 
 
-def fill_polygon(vertices):
+def draw_filled_polygon(vertices):
     """
-    Fill a polygon defined by a list of vertices in the current outline color.
+    Draw a filled polygon defined by a list of vertices using the current fill and 
+    outline colors.
+
     Example:
-        picture.fill_polygon([(10, 10), (20, 10), (15, 20)])
+    ```
+    picture.draw_filled_polygon([(10, 10), (20, 10), (15, 20)])
+    ```
     """
     DRAW.polygon(vertices,
                  fill=FILL_COLOR,
@@ -554,8 +668,11 @@ def draw_line(x1, y1, x2, y2):
     """
     Draws a line from (x1, y1) to (x2, y2) using the current outline color and
     pen width.
+
     Example:
-        picture.draw_line(10, 20, 100, 100)
+    ```
+    picture.draw_line(10, 20, 100, 100)
+    ```
     """
     DRAW.line([(x1, y1), (x2, y2)],
               fill=OUTLINE_COLOR,
@@ -563,9 +680,12 @@ def draw_line(x1, y1, x2, y2):
 
 def draw_text(x, y, text, font_size):
     """
-    Draws the text at (x, y) using the font_size in the current outline color.
+    Draws the text at (x, y) using the `font_size` and the current outline color.
+
     Example:
-        picture.draw_text(10, 20, "Hello!", 16)
+    ```
+    picture.draw_text(10, 20, "Hello!", 16)
+    ```
     """
     try:
         font = ImageFont.truetype("Arial.ttf", font_size)
@@ -581,7 +701,7 @@ def draw_text(x, y, text, font_size):
 
 class Picture():
     """
-    This class holds an PIL.Image as well as a PixelAccess for the image.
+    This class holds a PIL.Image as well as a PixelAccess for the image.
     """
 
     def __init__(self, image):
@@ -595,22 +715,28 @@ class Picture():
 def blank_image(width, height):
     """
     Returns a blank image with the given width and height.
+
     Example:
-        image = picture.blank_image(200, 300)
-        for y in range (image_height(image)):
-            for x in range(image_width(image)):
-                picture.set_pixel(image, x, y, (255, 0, 0))
-        picture.draw_image(100, 100, image)
+    ```
+    image = picture.blank_image(200, 300)
+    for y in range (picture.image_height(image)):
+        for x in range(picture.image_width(image)):
+            picture.set_pixel(image, x, y, (255, 0, 0))
+    picture.draw_image(100, 100, image)
+    ```
     """
     return Picture(Image.new("RGB", (width, height), color=(255, 255, 255)))
 
 
 def load_image(path):
     """
-    Create an image by loading it from the file system at the given path.
+    Create an image by loading it from the file system at the given `path`.
+
     Example:
-        image = picture.load_image("pretty_image.png")
-        picture.draw_image(100, 100, image) # Draws the image at (100, 100).
+    ```
+    image = picture.load_image("pretty_image.png")
+    picture.draw_image(100, 100, image) #Draws the image at (100, 100).
+    ```
     """
     image = Image.open(path)
     if image.mode == "RGB":
@@ -630,11 +756,14 @@ def save_image(image, path):
     """
     Save an image by writing it to the file system.
     WARNING: This _will_ overwrite existing files so be CAREFUL!
+
     Example:
-        image = picture.blank_image(200, 200)
-        for idx in range(200):
-            picture.set_pixel(image, idx, idx, (25, 183, 200))
-        picture.save_image("fancy.png")
+    ```
+    image = picture.blank_image(200, 200)
+    for i in range(200):
+        picture.set_pixel(image, i, i, (25, 183, 200))
+    picture.save_image(image, "fancy.png")
+    ```
     """
     image.image.save(path)
 
@@ -642,10 +771,12 @@ def save_image(image, path):
 def image_width(image):
     """
     Returns the number of pixels in each row of the image.
+
     Example:
-        image = picture.load_image("pretty_image.png")
-        width = picture.image_width(image)
-        height = picture.image_height(image)
+    ```
+    image = picture.load_image("pretty_image.png")
+    width = picture.image_width(image)
+    ```
     """
     return image.image.width
 
@@ -653,10 +784,12 @@ def image_width(image):
 def image_height(image):
     """
     Returns the number of pixels in each column of the image.
+
     Example:
-        image = picture.load_image("pretty_image.png")
-        width = picture.image_width(image)
-        height = picture.image_height(image)
+    ```
+    image = picture.load_image("pretty_image.png")
+    height = picture.image_height(image)
+    ```
     """
     return image.image.height
 
@@ -664,9 +797,12 @@ def image_height(image):
 def get_pixel(image, x, y):
     """
     Returns the pixel at (x, y) as a (red, green, blue) tuple.
+
     Example:
-        image = picture.load_image("pretty_image.png")
-        color = picture.get_pixel(image, 0, 0) # Top left pixel
+    ```
+    image = picture.load_image("pretty_image.png")
+    color = picture.get_pixel(image, 0, 0) #Top-left pixel
+    ```
     """
     return image.px[(x, y)]
 
@@ -674,9 +810,12 @@ def get_pixel(image, x, y):
 def get_red(image, x, y):
     """
     Returns the red value for the pixel at (x, y).
+
     Example:
-        image = picture.load_image("pretty_image.png")
-        red_val = picture.get_red(image, 0, 0) # Top left pixel
+    ```
+    image = picture.load_image("pretty_image.png")
+    red = picture.get_red(image, 0, 0) #Top-left pixel
+    ```
     """
     return image.px[(x, y)][0]
 
@@ -684,9 +823,12 @@ def get_red(image, x, y):
 def get_green(image, x, y):
     """
     Returns the green value for the pixel at (x, y).
+    
     Example:
-        image = picture.load_image("pretty_image.png")
-        green_val = picture.get_green(image, 0, 0) # Top left pixel
+    ```
+    image = picture.load_image("pretty_image.png")
+    green = picture.get_green(image, 0, 0) #Top-left pixel
+    ```
     """
     return image.px[(x, y)][1]
 
@@ -694,18 +836,24 @@ def get_green(image, x, y):
 def get_blue(image, x, y):
     """
     Returns the blue value for the pixel at (x, y).
+    
     Example:
-        image = picture.load_image("pretty_image.png")
-        green_val = picture.get_blue(image, 0, 0) # Top left pixel
+    ```
+    image = picture.load_image("pretty_image.png")
+    blue = picture.get_blue(image, 0, 0) #Top-left pixel
+    ```
     """
     return image.px[(x, y)][2]
 
 
 def set_red(image, x, y, val):
     """
-    Sets the red value for the pixel at (x, y) to val.
+    Sets the red value for the pixel at (x, y) to `val`.
+
     Example:
-        picture.set_red(image, 10, 10, 255) #All the way red
+    ```
+    picture.set_red(image, 10, 10, 255) #Brightest red
+    ```
     """
     red, green, blue = image.px[(x, y)]
     image.px[(x, y)] = (val, green, blue)
@@ -713,9 +861,12 @@ def set_red(image, x, y, val):
 
 def set_green(image, x, y, val):
     """
-    Sets the green value for the pixel at (x, y) to val.
+    Sets the green value for the pixel at (x, y) to `val`.
+
     Example:
-        picture.set_green(image, 10, 10, 255) #All the way green
+    ```
+    picture.set_green(image, 10, 10, 255) #Brightest green
+    ```
     """
     red, green, blue = image.px[(x, y)]
     image.px[(x, y)] = (red, val, blue)
@@ -723,9 +874,12 @@ def set_green(image, x, y, val):
 
 def set_blue(image, x, y, val):
     """
-    Sets the blue value for the pixel at (x, y) to val.
+    Sets the blue value for the pixel at (x, y) to `val`.
+
     Example:
-        picture.set_blue(image, 10, 10, 255) #All the way blue
+    ```
+    picture.set_blue(image, 10, 10, 255) #Brightest blue
+    ```
     """
     red, green, blue = image.px[(x, y)]
     image.px[(x, y)] = (red, green, val)
@@ -733,11 +887,14 @@ def set_blue(image, x, y, val):
 
 def set_pixel(image, x, y, *color):
     """
-    Sets the pixel at location (x, y) in image to be color.
+    Sets the pixel at location (x, y) in `image` to be `color`.
+
     Examples:
-        picture.set_pixel(image, 10, 10, "red")
-        picture.set_pixel(image, 20, 15, (123, 255, 0))
-        picture.set_pixel(image, 100, 10, 0, 0, 0) # black
+    ```
+    picture.set_pixel(image, 10, 10, "red")
+    picture.set_pixel(image, 20, 15, (123, 255, 0))
+    picture.set_pixel(image, 100, 10, 0, 0, 0)      #black
+    ```
     """
     image.px[(x, y)] = parse_color(*color)
 
@@ -745,23 +902,29 @@ def set_pixel(image, x, y, *color):
 def draw_image(x, y, image):
     """
     Draws the image at (x, y).
+
     Example:
-        image = picture.load_image("pretty_image.png")
-        width = picture.image_width(image)
-        height = picture.image_height(image)
-        picture.new_picture(width, height)
-        picture.draw_image(0, 0, image)
+    ```
+    image = picture.load_image("pretty_image.png")
+    width = picture.image_width(image)
+    height = picture.image_height(image)
+    picture.new_picture(width, height)
+    picture.draw_image(0, 0, image)
+    ```
     """
     IMAGE.paste(image.image, box=(x, y))
 
 
 def run():
     """
-    Runs the program until the window is closed.
+    Displays the image until the window is closed.
+
     Example:
-        picture.new_picture(800, 600)
-        picture.draw_rectangle(100, 100, 50, 50)
-        picture.run()
+    ```
+    picture.new_picture(800, 600)
+    picture.draw_rectangle(100, 100, 50, 50)
+    picture.run()
+    ```
     """
     display()
     ROOT.mainloop()
