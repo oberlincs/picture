@@ -806,7 +806,8 @@ for i in range(9):
 <span class="k">def</span> <span class="nf">draw_filled_chord</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Draw a filled arc (a portion of a circle) with connected end points using </span>
-<span class="sd">    the current fill and outline colors. The circle is centered at (x, y) and has radius `r`. The portion drawn starts at the `start` angle and ends at the `end` angle.</span>
+<span class="sd">    the current fill and outline colors. The circle is centered at (x, y) and </span>
+<span class="sd">    has radius `r`. The portion drawn starts at the `start` angle and ends at the `end` angle.</span>
 
 <span class="sd">    Example:</span>
 <span class="sd">    ```</span>
@@ -822,8 +823,9 @@ for i in range(9):
 
 <span class="k">def</span> <span class="nf">draw_rectangle</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Draw a rectangle with corners (x, y), (x+w, y), (x, y+h), and (x+w, y+h) with</span>
-<span class="sd">    the current outline color.</span>
+<span class="sd">    Draw a rectangle with corners (x, y), (x+w, y), (x, y+h), </span>
+<span class="sd">    and (x+w, y+h) with the current outline color. The coordinates</span>
+<span class="sd">    (x, y) represent the top-left corner of the rectangle.</span>
 
 <span class="sd">    Example:</span>
 <span class="sd">    ```</span>
@@ -837,8 +839,9 @@ for i in range(9):
 
 <span class="k">def</span> <span class="nf">draw_filled_rectangle</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Draw a filled rectangle with corners (x, y), (x+w, y), (x, y+h), and (x+w, y+h)</span>
-<span class="sd">    with the current fill and outline colors.</span>
+<span class="sd">    Draw a filled rectangle with corners (x, y), (x+w, y), (x, y+h), </span>
+<span class="sd">    and (x+w, y+h) with the current fill and outline colors. The coordinates</span>
+<span class="sd">    (x, y) represent the top-left corner of the rectangle.</span>
 
 <span class="sd">    Example:</span>
 <span class="sd">    ```</span>
@@ -854,7 +857,8 @@ for i in range(9):
 <span class="k">def</span> <span class="nf">draw_square</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">side</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Draw a square with corners (x, y), (x+side, y), (x, y+side), and</span>
-<span class="sd">    (x+side, y+side) with the current outline color.</span>
+<span class="sd">    (x+side, y+side) with the current outline color. The coordinates</span>
+<span class="sd">    (x, y) represent the top-left corner of the square.</span>
 
 <span class="sd">    Example:</span>
 <span class="sd">    ```</span>
@@ -867,7 +871,8 @@ for i in range(9):
 <span class="k">def</span> <span class="nf">draw_filled_square</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">side</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Draw a filled square with corners (x, y), (x+side, y), (x, y+side), and</span>
-<span class="sd">    (x+side, y+side) with the current fill and outline colors.</span>
+<span class="sd">    (x+side, y+side) with the current fill and outline colors. The coordinates</span>
+<span class="sd">    (x, y) represent the top-left corner of the square.</span>
 
 <span class="sd">    Example:</span>
 <span class="sd">    ```</span>
@@ -1665,8 +1670,9 @@ radius <code>vrad</code> with the current outline color.</p>
             <summary>View Source</summary>
             <div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">draw_rectangle</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Draw a rectangle with corners (x, y), (x+w, y), (x, y+h), and (x+w, y+h) with</span>
-<span class="sd">    the current outline color.</span>
+<span class="sd">    Draw a rectangle with corners (x, y), (x+w, y), (x, y+h), </span>
+<span class="sd">    and (x+w, y+h) with the current outline color. The coordinates</span>
+<span class="sd">    (x, y) represent the top-left corner of the rectangle.</span>
 
 <span class="sd">    Example:</span>
 <span class="sd">    ```</span>
@@ -1680,8 +1686,9 @@ radius <code>vrad</code> with the current outline color.</p>
 
         </details>
 
-            <div class="docstring"><p>Draw a rectangle with corners (x, y), (x+w, y), (x, y+h), and (x+w, y+h) with
-the current outline color.</p>
+            <div class="docstring"><p>Draw a rectangle with corners (x, y), (x+w, y), (x, y+h), 
+and (x+w, y+h) with the current outline color. The coordinates
+(x, y) represent the top-left corner of the rectangle.</p>
 
 <p>Example:</p>
 
@@ -1704,7 +1711,8 @@ the current outline color.</p>
             <div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">draw_square</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">side</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Draw a square with corners (x, y), (x+side, y), (x, y+side), and</span>
-<span class="sd">    (x+side, y+side) with the current outline color.</span>
+<span class="sd">    (x+side, y+side) with the current outline color. The coordinates</span>
+<span class="sd">    (x, y) represent the top-left corner of the square.</span>
 
 <span class="sd">    Example:</span>
 <span class="sd">    ```</span>
@@ -1717,7 +1725,8 @@ the current outline color.</p>
         </details>
 
             <div class="docstring"><p>Draw a square with corners (x, y), (x+side, y), (x, y+side), and
-(x+side, y+side) with the current outline color.</p>
+(x+side, y+side) with the current outline color. The coordinates
+(x, y) represent the top-left corner of the square.</p>
 
 <p>Example:</p>
 
@@ -1783,7 +1792,8 @@ the current outline color.</p>
             <div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">draw_filled_chord</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Draw a filled arc (a portion of a circle) with connected end points using </span>
-<span class="sd">    the current fill and outline colors. The circle is centered at (x, y) and has radius `r`. The portion drawn starts at the `start` angle and ends at the `end` angle.</span>
+<span class="sd">    the current fill and outline colors. The circle is centered at (x, y) and </span>
+<span class="sd">    has radius `r`. The portion drawn starts at the `start` angle and ends at the `end` angle.</span>
 
 <span class="sd">    Example:</span>
 <span class="sd">    ```</span>
@@ -1801,7 +1811,8 @@ the current outline color.</p>
         </details>
 
             <div class="docstring"><p>Draw a filled arc (a portion of a circle) with connected end points using 
-the current fill and outline colors. The circle is centered at (x, y) and has radius <code>r</code>. The portion drawn starts at the <code>start</code> angle and ends at the <code>end</code> angle.</p>
+the current fill and outline colors. The circle is centered at (x, y) and 
+has radius <code>r</code>. The portion drawn starts at the <code>start</code> angle and ends at the <code>end</code> angle.</p>
 
 <p>Example:</p>
 
@@ -1939,8 +1950,9 @@ outline colors.</p>
             <summary>View Source</summary>
             <div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">draw_filled_rectangle</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Draw a filled rectangle with corners (x, y), (x+w, y), (x, y+h), and (x+w, y+h)</span>
-<span class="sd">    with the current fill and outline colors.</span>
+<span class="sd">    Draw a filled rectangle with corners (x, y), (x+w, y), (x, y+h), </span>
+<span class="sd">    and (x+w, y+h) with the current fill and outline colors. The coordinates</span>
+<span class="sd">    (x, y) represent the top-left corner of the rectangle.</span>
 
 <span class="sd">    Example:</span>
 <span class="sd">    ```</span>
@@ -1955,8 +1967,9 @@ outline colors.</p>
 
         </details>
 
-            <div class="docstring"><p>Draw a filled rectangle with corners (x, y), (x+w, y), (x, y+h), and (x+w, y+h)
-with the current fill and outline colors.</p>
+            <div class="docstring"><p>Draw a filled rectangle with corners (x, y), (x+w, y), (x, y+h), 
+and (x+w, y+h) with the current fill and outline colors. The coordinates
+(x, y) represent the top-left corner of the rectangle.</p>
 
 <p>Example:</p>
 
@@ -1979,7 +1992,8 @@ with the current fill and outline colors.</p>
             <div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">draw_filled_square</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">side</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Draw a filled square with corners (x, y), (x+side, y), (x, y+side), and</span>
-<span class="sd">    (x+side, y+side) with the current fill and outline colors.</span>
+<span class="sd">    (x+side, y+side) with the current fill and outline colors. The coordinates</span>
+<span class="sd">    (x, y) represent the top-left corner of the square.</span>
 
 <span class="sd">    Example:</span>
 <span class="sd">    ```</span>
@@ -1992,7 +2006,8 @@ with the current fill and outline colors.</p>
         </details>
 
             <div class="docstring"><p>Draw a filled square with corners (x, y), (x+side, y), (x, y+side), and
-(x+side, y+side) with the current fill and outline colors.</p>
+(x+side, y+side) with the current fill and outline colors. The coordinates
+(x, y) represent the top-left corner of the square.</p>
 
 <p>Example:</p>
 

@@ -561,7 +561,8 @@ def draw_chord(x, y, r, start, end):
 def draw_filled_chord(x, y, r, start, end):
     """
     Draw a filled arc (a portion of a circle) with connected end points using 
-    the current fill and outline colors. The circle is centered at (x, y) and has radius `r`. The portion drawn starts at the `start` angle and ends at the `end` angle.
+    the current fill and outline colors. The circle is centered at (x, y) and 
+    has radius `r`. The portion drawn starts at the `start` angle and ends at the `end` angle.
 
     Example:
     ```
@@ -577,8 +578,9 @@ def draw_filled_chord(x, y, r, start, end):
 
 def draw_rectangle(x, y, w, h):
     """
-    Draw a rectangle with corners (x, y), (x+w, y), (x, y+h), and (x+w, y+h) with
-    the current outline color.
+    Draw a rectangle with corners (x, y), (x+w, y), (x, y+h), 
+    and (x+w, y+h) with the current outline color. The coordinates
+    (x, y) represent the top-left corner of the rectangle.
 
     Example:
     ```
@@ -592,8 +594,9 @@ def draw_rectangle(x, y, w, h):
 
 def draw_filled_rectangle(x, y, w, h):
     """
-    Draw a filled rectangle with corners (x, y), (x+w, y), (x, y+h), and (x+w, y+h)
-    with the current fill and outline colors.
+    Draw a filled rectangle with corners (x, y), (x+w, y), (x, y+h), 
+    and (x+w, y+h) with the current fill and outline colors. The coordinates
+    (x, y) represent the top-left corner of the rectangle.
 
     Example:
     ```
@@ -609,7 +612,8 @@ def draw_filled_rectangle(x, y, w, h):
 def draw_square(x, y, side):
     """
     Draw a square with corners (x, y), (x+side, y), (x, y+side), and
-    (x+side, y+side) with the current outline color.
+    (x+side, y+side) with the current outline color. The coordinates
+    (x, y) represent the top-left corner of the square.
 
     Example:
     ```
@@ -622,7 +626,8 @@ def draw_square(x, y, side):
 def draw_filled_square(x, y, side):
     """
     Draw a filled square with corners (x, y), (x+side, y), (x, y+side), and
-    (x+side, y+side) with the current fill and outline colors.
+    (x+side, y+side) with the current fill and outline colors. The coordinates
+    (x, y) represent the top-left corner of the square.
 
     Example:
     ```
