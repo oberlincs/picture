@@ -70,6 +70,7 @@ __all__ = [
     "draw_line",
     "draw_oval",
     "draw_polygon",
+    "draw_polyline",
     "draw_rectangle",
     "draw_square",
     "draw_text",
@@ -187,7 +188,7 @@ def new_picture(width, height):
 
 def save_picture(path):
     """
-    Save the current picture to a file.
+    Save the current picture to a file.  
     WARNING: This *will* overwrite existing files so be CAREFUL!
 
     Example:
@@ -283,7 +284,10 @@ def set_pen_width(width):
     ```
     """
     global PEN_WIDTH
-    PEN_WIDTH = width
+    if width > 0 and width == int(width):
+        PEN_WIDTH = int(width)
+    else:
+        raise ValueError("Pen width must be a positive integer")
 
 
 def get_pen_width():
@@ -669,6 +673,21 @@ def draw_filled_polygon(vertices):
               width=PEN_WIDTH)
 
 
+def draw_polyline(vertices):
+    """
+    Draws a polyline defined by a list of vertices using the current outline color and
+    pen width.
+
+    Example:
+    ```
+    picture.draw_polyline([(10, 15), (35, 10), (5, 40)])
+    ```
+    """
+    DRAW.line(vertices,
+              fill=OUTLINE_COLOR,
+              width=PEN_WIDTH)
+
+
 def draw_line(x1, y1, x2, y2):
     """
     Draws a line from (x1, y1) to (x2, y2) using the current outline color and
@@ -759,8 +778,8 @@ def load_image(path):
 
 def save_image(image, path):
     """
-    Save an image by writing it to the file system.
-    WARNING: This _will_ overwrite existing files so be CAREFUL!
+    Save an image by writing it to the file system.  
+    WARNING: This *will* overwrite existing files so be CAREFUL!
 
     Example:
     ```
