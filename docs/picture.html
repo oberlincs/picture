@@ -60,6 +60,9 @@
                     <a class="function" href="#draw_polygon">draw_polygon</a>
             </li>
             <li>
+                    <a class="function" href="#draw_polyline">draw_polyline</a>
+            </li>
+            <li>
                     <a class="function" href="#draw_rectangle">draw_rectangle</a>
             </li>
             <li>
@@ -315,6 +318,7 @@ for i in range(9):
     <span class="s2">&quot;draw_line&quot;</span><span class="p">,</span>
     <span class="s2">&quot;draw_oval&quot;</span><span class="p">,</span>
     <span class="s2">&quot;draw_polygon&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;draw_polyline&quot;</span><span class="p">,</span>
     <span class="s2">&quot;draw_rectangle&quot;</span><span class="p">,</span>
     <span class="s2">&quot;draw_square&quot;</span><span class="p">,</span>
     <span class="s2">&quot;draw_text&quot;</span><span class="p">,</span>
@@ -432,7 +436,7 @@ for i in range(9):
 
 <span class="k">def</span> <span class="nf">save_picture</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Save the current picture to a file.</span>
+<span class="sd">    Save the current picture to a file.  </span>
 <span class="sd">    WARNING: This *will* overwrite existing files so be CAREFUL!</span>
 
 <span class="sd">    Example:</span>
@@ -528,7 +532,10 @@ for i in range(9):
 <span class="sd">    ```</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">global</span> <span class="n">PEN_WIDTH</span>
-    <span class="n">PEN_WIDTH</span> <span class="o">=</span> <span class="n">width</span>
+    <span class="k">if</span> <span class="n">width</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">width</span> <span class="o">==</span> <span class="nb">int</span><span class="p">(</span><span class="n">width</span><span class="p">):</span>
+        <span class="n">PEN_WIDTH</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">width</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Pen width must be a positive integer&quot;</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">get_pen_width</span><span class="p">():</span>
@@ -914,6 +921,21 @@ for i in range(9):
               <span class="n">width</span><span class="o">=</span><span class="n">PEN_WIDTH</span><span class="p">)</span>
 
 
+<span class="k">def</span> <span class="nf">draw_polyline</span><span class="p">(</span><span class="n">vertices</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Draws a polyline defined by a list of vertices using the current outline color and</span>
+<span class="sd">    pen width.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">    ```</span>
+<span class="sd">    picture.draw_polyline([(10, 15), (35, 10), (5, 40)])</span>
+<span class="sd">    ```</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">DRAW</span><span class="o">.</span><span class="n">line</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span>
+              <span class="n">fill</span><span class="o">=</span><span class="n">OUTLINE_COLOR</span><span class="p">,</span>
+              <span class="n">width</span><span class="o">=</span><span class="n">PEN_WIDTH</span><span class="p">)</span>
+
+
 <span class="k">def</span> <span class="nf">draw_line</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Draws a line from (x1, y1) to (x2, y2) using the current outline color and</span>
@@ -1004,8 +1026,8 @@ for i in range(9):
 
 <span class="k">def</span> <span class="nf">save_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Save an image by writing it to the file system.</span>
-<span class="sd">    WARNING: This _will_ overwrite existing files so be CAREFUL!</span>
+<span class="sd">    Save an image by writing it to the file system.  </span>
+<span class="sd">    WARNING: This *will* overwrite existing files so be CAREFUL!</span>
 
 <span class="sd">    Example:</span>
 <span class="sd">    ```</span>
@@ -1653,6 +1675,44 @@ radius <code>vrad</code> with the current outline color.</p>
 <p>Example:</p>
 
 <pre><code><a href="#draw_polygon">picture.draw_polygon</a>([(10, 10), (20, 10), (15, 20)])
+</code></pre>
+</div>
+
+
+                </section>
+                <section id="draw_polyline">
+                            <div class="attr function"><a class="headerlink" href="#draw_polyline">#&nbsp;&nbsp</a>
+
+        
+            <span class="def">def</span>
+            <span class="name">draw_polyline</span><span class="signature">(vertices)</span>:
+    </div>
+
+                <details>
+            <summary>View Source</summary>
+            <div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">draw_polyline</span><span class="p">(</span><span class="n">vertices</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Draws a polyline defined by a list of vertices using the current outline color and</span>
+<span class="sd">    pen width.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">    ```</span>
+<span class="sd">    picture.draw_polyline([(10, 15), (35, 10), (5, 40)])</span>
+<span class="sd">    ```</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">DRAW</span><span class="o">.</span><span class="n">line</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span>
+              <span class="n">fill</span><span class="o">=</span><span class="n">OUTLINE_COLOR</span><span class="p">,</span>
+              <span class="n">width</span><span class="o">=</span><span class="n">PEN_WIDTH</span><span class="p">)</span>
+</pre></div>
+
+        </details>
+
+            <div class="docstring"><p>Draws a polyline defined by a list of vertices using the current outline color and
+pen width.</p>
+
+<p>Example:</p>
+
+<pre><code><a href="#draw_polyline">picture.draw_polyline</a>([(10, 15), (35, 10), (5, 40)])
 </code></pre>
 </div>
 
@@ -2667,8 +2727,8 @@ any existing pictures.</p>
             <summary>View Source</summary>
             <div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">save_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Save an image by writing it to the file system.</span>
-<span class="sd">    WARNING: This _will_ overwrite existing files so be CAREFUL!</span>
+<span class="sd">    Save an image by writing it to the file system.  </span>
+<span class="sd">    WARNING: This *will* overwrite existing files so be CAREFUL!</span>
 
 <span class="sd">    Example:</span>
 <span class="sd">    ```</span>
@@ -2683,8 +2743,8 @@ any existing pictures.</p>
 
         </details>
 
-            <div class="docstring"><p>Save an image by writing it to the file system.
-WARNING: This _will_ overwrite existing files so be CAREFUL!</p>
+            <div class="docstring"><p>Save an image by writing it to the file system. <br />
+WARNING: This <em>will</em> overwrite existing files so be CAREFUL!</p>
 
 <p>Example:</p>
 
@@ -2709,7 +2769,7 @@ for i in range(200):
             <summary>View Source</summary>
             <div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">save_picture</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Save the current picture to a file.</span>
+<span class="sd">    Save the current picture to a file.  </span>
 <span class="sd">    WARNING: This *will* overwrite existing files so be CAREFUL!</span>
 
 <span class="sd">    Example:</span>
@@ -2724,7 +2784,7 @@ for i in range(200):
 
         </details>
 
-            <div class="docstring"><p>Save the current picture to a file.
+            <div class="docstring"><p>Save the current picture to a file. <br />
 WARNING: This <em>will</em> overwrite existing files so be CAREFUL!</p>
 
 <p>Example:</p>
@@ -2965,7 +3025,10 @@ in a clockwise direction.</p>
 <span class="sd">    ```</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">global</span> <span class="n">PEN_WIDTH</span>
-    <span class="n">PEN_WIDTH</span> <span class="o">=</span> <span class="n">width</span>
+    <span class="k">if</span> <span class="n">width</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">width</span> <span class="o">==</span> <span class="nb">int</span><span class="p">(</span><span class="n">width</span><span class="p">):</span>
+        <span class="n">PEN_WIDTH</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">width</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Pen width must be a positive integer&quot;</span><span class="p">)</span>
 </pre></div>
 
         </details>
