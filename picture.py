@@ -711,14 +711,9 @@ def draw_text(x, y, text, font_size):
     picture.draw_text(10, 20, "Hello!", 16)
     ```
     """
-    try:
-        font = ImageFont.truetype("Arial.ttf", font_size)
-    except OSError:
-        font = ImageFont.truetype('FreeSans.ttf', font_size)
 
     DRAW.text((x, y),
               text,
-              font=font,
               fill=OUTLINE_COLOR,
               width=PEN_WIDTH)
 

@@ -959,14 +959,9 @@ for i in range(9):
 <span class="sd">    picture.draw_text(10, 20, &quot;Hello!&quot;, 16)</span>
 <span class="sd">    ```</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">font</span> <span class="o">=</span> <span class="n">ImageFont</span><span class="o">.</span><span class="n">truetype</span><span class="p">(</span><span class="s2">&quot;Arial.ttf&quot;</span><span class="p">,</span> <span class="n">font_size</span><span class="p">)</span>
-    <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
-        <span class="n">font</span> <span class="o">=</span> <span class="n">ImageFont</span><span class="o">.</span><span class="n">truetype</span><span class="p">(</span><span class="s1">&#39;FreeSans.ttf&#39;</span><span class="p">,</span> <span class="n">font_size</span><span class="p">)</span>
 
     <span class="n">DRAW</span><span class="o">.</span><span class="n">text</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span>
               <span class="n">text</span><span class="p">,</span>
-              <span class="n">font</span><span class="o">=</span><span class="n">font</span><span class="p">,</span>
               <span class="n">fill</span><span class="o">=</span><span class="n">OUTLINE_COLOR</span><span class="p">,</span>
               <span class="n">width</span><span class="o">=</span><span class="n">PEN_WIDTH</span><span class="p">)</span>
 
@@ -1815,14 +1810,9 @@ and (x+w, y+h) with the current outline color. The coordinates
 <span class="sd">    picture.draw_text(10, 20, &quot;Hello!&quot;, 16)</span>
 <span class="sd">    ```</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">font</span> <span class="o">=</span> <span class="n">ImageFont</span><span class="o">.</span><span class="n">truetype</span><span class="p">(</span><span class="s2">&quot;Arial.ttf&quot;</span><span class="p">,</span> <span class="n">font_size</span><span class="p">)</span>
-    <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
-        <span class="n">font</span> <span class="o">=</span> <span class="n">ImageFont</span><span class="o">.</span><span class="n">truetype</span><span class="p">(</span><span class="s1">&#39;FreeSans.ttf&#39;</span><span class="p">,</span> <span class="n">font_size</span><span class="p">)</span>
 
     <span class="n">DRAW</span><span class="o">.</span><span class="n">text</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span>
               <span class="n">text</span><span class="p">,</span>
-              <span class="n">font</span><span class="o">=</span><span class="n">font</span><span class="p">,</span>
               <span class="n">fill</span><span class="o">=</span><span class="n">OUTLINE_COLOR</span><span class="p">,</span>
               <span class="n">width</span><span class="o">=</span><span class="n">PEN_WIDTH</span><span class="p">)</span>
 </pre></div>
